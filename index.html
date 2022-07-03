@@ -1,0 +1,186 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <style>
+        #number-guess,
+        #result,
+        #history {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        #history {
+            margin-top: 16px;
+        }
+
+        .banner {
+            color: #FFD23F;
+            font-size: 90px;
+            font-family: sans-serif;
+        }
+    </style>
+    <script>
+        /**
+ * Guess the number game
+ * DONE:	Get user value from input and save it to variable numberGuess
+ * DONE:	Generate a random number 1 to 100 and save it to variable correctNumber
+ * DONE:	Console whether the guess is too high, too low, or is correct inside the playGame function 
+ * DONE:	Create a function called displayResult to move the logic for if the guess is too high, too low, correct
+ * DONE:	Complete the showYouWon, showNumberAbove, showNumberBelow functions
+ * DONE:	Use the showYouWon,... functions within display result to display the correct dialog
+ * DONE:	Save the guess history in a variable called guesses
+ * DONE:	Display the guess history using displayHistory() function
+ * DONE:	Use the initGame function to restart the game
+ */
+
+        // Variable to store the list of guesses
+        let guesses = [];
+        // Variable to store the correct random number
+        let correctNumber = getRandomNumber();
+
+
+        window.onload = function () {
+            document.getElementById("number-submit").addEventListener("click", playGame);
+            document.getElementById("restart-game").addEventListener("click", initGame);
+            getRandomNumber();
+            console.log(correctNumber);
+        }
+        /**
+         * Functionality for playing whole game
+         */
+        function playGame() {
+            // *CODE GOES HERE*
+            let numberGuess = document.getElementById("number-guess").value;
+            displayResult(numberGuess);
+            saveGuessHistory(numberGuess);
+            displayHistory();
+        }
+        function initGame() {
+            // *CODE GOES BELOW HERE*
+            // Reset the correct number
+            // Reset the result display
+            // Reset the guesses history
+            // Reset the guess history display
+            correctNumber = getRandomNumber();
+            document.getElementById("result").innerHTML = "";
+            guesses = [];
+            document.getElementById("history").innerHTML = "";
+        }
+        /**
+         * Return a random number between 1 and 100
+         * HINT: use Math.random
+         */
+        function getRandomNumber() {
+            // *CODE GOES HERE*
+            let correctNumber = Math.floor(Math.random() * 100 + 1);
+            return correctNumber;
+        }
+        /**
+         * Save guess history
+         * HINT: Search google "append to array javascript"
+         * HINT: Use the guesses variable
+         */
+        function saveGuessHistory(guess) {
+            guesses.push(guess);
+            console.log(guesses);
+        }
+        /**
+         * Display guess history to user
+         * HTML TO USE:
+         * <ul class='list-group'>
+         * 		<li class='list-group-item'> You guessed {number}</li>
+         * </ul>
+         * HINT: Use while loop and string concatenation to create a list of 
+         */
+        function displayHistory() {
+            let list = "<ul class='list-group'>";
+            // *CODE GOES HERE*
+            let index = guesses.length - 1;
+            while (index >= 0) {
+                list += "<li class='list-group-item'>" + "You guessed " + guesses[index] + "</li>";
+                index -= 1;
+            }
+            list += '</ul>';
+            document.getElementById("history").innerHTML = list;
+        }
+        function getDialog(dialogType, text) {
+            let dialog;
+            switch (dialogType) {
+                case "warning":
+                    dialog = "<div class='alert alert-warning' role='alert'>"
+                    break;
+                case "won":
+                    dialog = "<div class='alert alert-success' role='alert'>"
+                    break;
+            }
+            dialog += text;
+            dialog += "</div>"
+            return dialog;
+        }
+        /**
+         * Retreive the dialog using the getDialog() function
+         * and save it to variable called dialog
+         * HINT: Use the 'won' and text parameters
+         */
+        function showYouWon() {
+            const text = "Awesome job, you got it";
+            // *CODE GOES BELOW HERE*
+            let dialog = getDialog('won', text);
+            document.getElementById("result").innerHTML = dialog;
+        }
+        function showNumberAbove() {
+            const text = "Your guess is too high"
+            // *CODE GOES BELOW HERE*
+            let dialog = getDialog('warning', text);
+            document.getElementById("result").innerHTML = dialog;
+        }
+        function showNumberBelow() {
+            const text = "Your guess is too low"
+            // *CODE GOES BELOW HERE*
+            let dialog = getDialog('warning', text);
+            document.getElementById("result").innerHTML = dialog;
+        }
+        function displayResult(numberGuess) {
+            if (numberGuess > correctNumber) {
+                // console.log("Too high");
+                showNumberAbove();
+            } else if (numberGuess < correctNumber) {
+                // console.log("Too low");
+                showNumberBelow();
+            } else {
+                // console.log("Correct Number")
+                showYouWon();
+            }
+        }
+    </script>
+</head>
+
+<body class="text-center">
+    <nav class="navbar navbar-dark bg-dark">
+        <!--Navbar content-->
+        <a href="#" class="navbar-brand">Guess The Number</a>
+    </nav>
+    <main>
+        <h1 class="banner p-3">1.2.3.</h1>
+        <div class="form-group">
+            <input type="number" placeholder="What's your guess?" id="number-guess"
+                class="form-control form-control-lg">
+        </div>
+        <div id="result">
+            <!--This is where the result will be-->
+        </div>
+        <button type="button" id="number-submit" class="btn btn-lg btn-secondary m-3">Check Me</button>
+        <button type="button" id="restart-game" class="btn btn-lg btn-light">Restart</button>
+        <div id="history">
+            <!--This is where the history will be-->
+        </div>
+    </main>
+</body>
+
+</html>
